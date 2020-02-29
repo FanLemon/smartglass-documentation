@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Simple Message - Xbox SmartGlass protocol</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Xbox SmartGlass protocol</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../basics/" class="nav-link">Basics</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../cryptography/" class="nav-link">Cryptography</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Simple Message</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../channels/" class="nav-link">Channels</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../message/" class="nav-link">Messages</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../nano/" class="nav-link">Gamestream (Nano)</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../cryptography/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../channels/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#simple-message" class="nav-link">Simple Message</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#general" class="nav-link">General</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#header" class="nav-link">Header</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#power-on-request" class="nav-link">Power On Request</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#discovery-packet" class="nav-link">Discovery Packet</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#connect-packet" class="nav-link">Connect Packet</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="simple-message">Simple Message</h1>
+<ul>
+<li><a href="#simple-message">Simple Message</a></li>
+<li><a href="#general">General</a></li>
+<li><a href="#header">Header</a><ul>
+<li><a href="#packet-type">Packet Type</a></li>
+</ul>
+</li>
+<li><a href="#power-on-request">Power On Request</a></li>
+<li><a href="#discovery-packet">Discovery Packet</a><ul>
+<li><a href="#discovery-request">Discovery Request</a></li>
+<li><a href="#client-type">Client Type</a></li>
+<li><a href="#discovery-response">Discovery Response</a></li>
+<li><a href="#primary-device-flags">Primary Device Flags</a></li>
+<li><a href="#certificate">Certificate</a></li>
+</ul>
+</li>
+<li><a href="#connect-packet">Connect Packet</a><ul>
+<li><a href="#connect-request">Connect Request</a></li>
+<li><a href="#public-key-type">Public Key Type</a></li>
+<li><a href="#fragmenting-request">Fragmenting Request</a></li>
+<li><a href="#request-group-explaination">Request Group explaination</a></li>
+<li><a href="#connect-response">Connect Response</a></li>
+<li><a href="#connect-result">Connect Result</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="general">General</h2>
+<p>Simple Messages are used for the most basic tasks in SmartGlass</p>
+<ul>
+<li>Discovering consoles on the network</li>
+<li>Waking up consoles (Power On)</li>
+<li>Connecting to consoles</li>
+</ul>
+<h2 id="header">Header</h2>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x00</td>
+<td align="right">0</td>
+<td>uint16</td>
+<td>Packet Type</td>
+</tr>
+<tr>
+<td align="right">0x02</td>
+<td align="right">2</td>
+<td>uint16</td>
+<td>Unprotected Payload Length</td>
+</tr>
+<tr>
+<td align="right">0x04</td>
+<td align="right">4</td>
+<td>uint16</td>
+<td>*Protected Payload Length</td>
+</tr>
+<tr>
+<td align="right">0x06 or 0x08</td>
+<td align="right">6 or 8</td>
+<td>uint16</td>
+<td>Version</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>NOTE: The header only contains the protected
+payload length-field if packet actually has such
+payload:</p>
+<p>SimpleMessage containing protected payload:</p>
+<ul>
+<li><a href="#connect-request">Connect Request</a></li>
+<li><a href="#connect-response">Connect Response</a></li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>Packet Type</strong>: See <a href="#packet-type">Packet Type</a></li>
+<li><strong>Version</strong>: Usually 2, <a href="#discovery-packet">Discovery</a> has set this to 0</li>
+</ul>
+<h3 id="packet-type">Packet Type</h3>
+<table>
+<thead>
+<tr>
+<th align="left">Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0xCC00</td>
+<td><a href="#connect-request">Connect Request</a></td>
+</tr>
+<tr>
+<td align="left">0xCC01</td>
+<td><a href="#connect-response">Connect Response</a></td>
+</tr>
+<tr>
+<td align="left">0xDD00</td>
+<td><a href="#discovery-request">Discovery Request</a></td>
+</tr>
+<tr>
+<td align="left">0xDD01</td>
+<td><a href="#discovery-response">Discovery Response</a></td>
+</tr>
+<tr>
+<td align="left">0xDD02</td>
+<td> <a href="#power-on-request">Power On Request</a></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><a href="../message/">Message</a> packets (type: <code>0xD00D</code>) have a different
+header and are not considered <code>SimpleMessage</code></p>
+</blockquote>
+<h2 id="power-on-request">Power On Request</h2>
+<p><strong>Packet Type</strong>: <code>0xDD02</code>
+<strong>Response</strong>: None</p>
+<p>This packet is sent over broadcast / multicast and directly
+to the console's IP address.</p>
+<ul>
+<li>Broadcast (255.255.255.255)</li>
+<li>Multicast (239.255.255.250)</li>
+<li>Specific IP of the console (if available)</li>
+</ul>
+<p>If the console is in standby-mode, it will process that
+packet and power on.</p>
+<blockquote>
+<p>NOTE: You may need to send the packet multiple times to make
+sure it is actually received by the console.</p>
+<p>Power On request packets only have an <code>Unprotected payload</code></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x00</td>
+<td align="right">0</td>
+<td>SGString</td>
+<td>Live ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="discovery-packet">Discovery Packet</h2>
+<p>Discovery packet, as the name suggests, is used for finding
+active consoles on the network.</p>
+<p>Same as <a href="#power-on-request">Power On Request</a>, the packet is sent to 3 remote endpoints:</p>
+<ul>
+<li>Broadcast (255.255.255.255)</li>
+<li>Multicast (239.255.255.250)</li>
+<li>Specific IP of the console (if available)</li>
+</ul>
+<p>The console will respond by sending a <a href="#discovery-response">Discovery Response</a> to the sending IP.</p>
+<blockquote>
+<p>Discovery packets set Header-&gt;Version: 0</p>
+<p>Discovery packets only have an <code>Unprotected payload</code></p>
+</blockquote>
+<h3 id="discovery-request">Discovery Request</h3>
+<p><strong>Packet Type</strong>: <code>0xDD00</code>
+<strong>Response</strong>: <a href="#discovery-response">Discovery Response</a></p>
+<p>Discovers active consoles on the network</p>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x00</td>
+<td align="right">0</td>
+<td>uint32</td>
+<td>Flags</td>
+</tr>
+<tr>
+<td align="right">0x04</td>
+<td align="right">4</td>
+<td>uint16</td>
+<td>Client Type</td>
+</tr>
+<tr>
+<td align="right">0x06</td>
+<td align="right">6</td>
+<td>uint16</td>
+<td>Minimum Version</td>
+</tr>
+<tr>
+<td align="right">0x08</td>
+<td align="right">8</td>
+<td>uint16</td>
+<td>Maximum Version</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Flags</strong>: Unknown, always 0</li>
+<li><strong>Client Type</strong>: See <a href="#client-type">Client Type</a></li>
+<li><strong>Minimum Version</strong>: Minimum version to discover: 0</li>
+<li><strong>Maximum Version</strong>: Maximum version to discover: 2</li>
+</ul>
+<h4 id="client-type">Client Type</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Xbox One</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>Xbox 360</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>Windows Desktop</td>
+<td>0x03</td>
+</tr>
+<tr>
+<td>Windows Store</td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>Windows Phone</td>
+<td>0x05</td>
+</tr>
+<tr>
+<td>iPhone</td>
+<td>0x06</td>
+</tr>
+<tr>
+<td>iPad</td>
+<td>0x07</td>
+</tr>
+<tr>
+<td>Android</td>
+<td>0x08</td>
+</tr>
+</tbody>
+</table>
+<h3 id="discovery-response">Discovery Response</h3>
+<p><strong>Packet Type</strong>: <code>0xDD01</code>
+<strong>Response</strong>: None</p>
+<p>Console info for the client</p>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x00</td>
+<td align="right">0</td>
+<td>uint32</td>
+<td>Primary Device Flags</td>
+</tr>
+<tr>
+<td align="right">0x04</td>
+<td align="right">4</td>
+<td>uint16</td>
+<td>Type</td>
+</tr>
+<tr>
+<td align="right">0x08</td>
+<td align="right">8</td>
+<td>SGString</td>
+<td>ConsoleName</td>
+</tr>
+<tr>
+<td align="right">0x??</td>
+<td align="right">?</td>
+<td>SGString</td>
+<td>UUID</td>
+</tr>
+<tr>
+<td align="right">0x??</td>
+<td align="right">?</td>
+<td>uint32</td>
+<td>Last Error</td>
+</tr>
+<tr>
+<td align="right">0x??</td>
+<td align="right">?</td>
+<td>uint16</td>
+<td>Certificate Length</td>
+</tr>
+<tr>
+<td align="right">0x??</td>
+<td align="right">?</td>
+<td>char[len]</td>
+<td>Certificate</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Primary Device Flags</strong>: See <a href="#primary-device-flags">Primary Device Flags</a></li>
+<li><strong>Type</strong>: See <a href="#client-type">Client Type</a></li>
+<li><strong>ConsoleName</strong>: Console Name</li>
+<li><strong>UUID</strong>: Console UUID aka Hardware Id</li>
+<li><strong>Last Error</strong>: Last error</li>
+<li><strong>Certificate</strong>: See <a href="#certificate">Certificate</a></li>
+</ul>
+<h4 id="primary-device-flags">Primary Device Flags</h4>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Bits</th>
+<th>Mask</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Allow Console Users</td>
+<td><code>0000 0000 0000 0001</code></td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>Allow Authenticated Users</td>
+<td><code>0000 0000 0000 0010</code></td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>Allow Anonymous Users</td>
+<td><code>0000 0000 0000 0100</code></td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>Certificate Pending</td>
+<td><code>0000 0000 0000 1000</code></td>
+<td>0x08</td>
+</tr>
+</tbody>
+</table>
+<h4 id="certificate">Certificate</h4>
+<p>Certificate is X509 ASN.1 / DER formatted.</p>
+<p><strong>Fields</strong>:</p>
+<blockquote>
+<ul>
+<li><strong>Version</strong>: 3</li>
+<li><strong>Serial Number</strong>: Console serial number</li>
+<li><strong>Issuer</strong>: <code>CN=XBL Smart Glass Issuing CA</code></li>
+<li><strong>Validity</strong>: Validity timespan</li>
+<li><strong>Subject</strong>: Console's LiveId (<code>CN=&lt;LiveId&gt;</code>)</li>
+<li><strong>Subject Public Key Info</strong>: Console's public key</li>
+</ul>
+<p>TIP: You can get a human-readable output for the cert
+via openssl:</p>
+<p><code>openssl x509 -inform der -in &lt;smartglass certificate&gt; -text -noout</code></p>
+</blockquote>
+<h2 id="connect-packet">Connect Packet</h2>
+<h3 id="connect-request">Connect Request</h3>
+<p><strong>Packet Type</strong>: <code>0xCC00</code>
+<strong>Response</strong>: <a href="#connect-response">Connect Response</a></p>
+<p>The request is sent from client to console.</p>
+<p>Based on the previously received <a href="#discovery-response">Discovery Response</a>, a shared secret is
+calculated and the request is encrypted using that (See <a href="../cryptography/">Cryptography</a>).</p>
+<h5 id="public-key-type">Public Key Type</h5>
+<p>Public Key identifier, sent with <a href="#connect-request">Connect Request</a> packet.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EC DH P256</td>
+<td>0x00</td>
+<td>65</td>
+</tr>
+<tr>
+<td>EC DH P384</td>
+<td>0x01</td>
+<td>97</td>
+</tr>
+<tr>
+<td>EC DH P521</td>
+<td>0x02</td>
+<td>133</td>
+</tr>
+</tbody>
+</table>
+<h4 id="fragmenting-request">Fragmenting Request</h4>
+<p>When connecting authenticated, the <code>Authentication data</code>
+(userhash, authorization token) won't fit inside a single packet,
+which means the packet will need to be fragmented.</p>
+<ol>
+<li>Calculate payload length (plaintext unprotected + plaintext
+   protected) of assembled <a href="#connect-request">Connect Request</a> using
+   empty <code>Userhash</code>("") and <code>Auth Token</code>("").</li>
+<li>Calculate available space by <code>available space = (1024 - payload length)</code></li>
+<li>Assemble first fragment by copying whole <code>Userhash</code> and filling up
+   the rest of available space with <code>Auth Token</code>.</li>
+<li>Assemble rest of fragments by just filling them with <code>Auth Token</code> chunks.</li>
+</ol>
+<blockquote>
+<p>NOTE: Make sure to use correct Request (Group) numbering, see
+<a href="#request-group-explaination">Request Group explaination</a></p>
+</blockquote>
+<p><strong>Unprotected Payload</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x00</td>
+<td align="right">0</td>
+<td>byte[16]</td>
+<td>SmartGlass UUID</td>
+</tr>
+<tr>
+<td align="right">0x10</td>
+<td align="right">16</td>
+<td>uint16</td>
+<td>Public Key Type</td>
+</tr>
+<tr>
+<td align="right">0x12</td>
+<td align="right">18</td>
+<td>byte[??]</td>
+<td>Public Key</td>
+</tr>
+<tr>
+<td align="right">0x52</td>
+<td align="right">82</td>
+<td>byte[16]</td>
+<td>IV</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>SmartGlass UUID</strong>: Random UUID generated by the client</li>
+<li><strong>Public Key Type</strong>: See <a href="#public-key-type">Public Key Type</a></li>
+<li><strong>Public Key</strong>: Public Key, size depends on <a href="#public-key-type">Public Key Type</a></li>
+<li><strong>IV</strong>: Initialization Vector of the encrypted packet</li>
+</ul>
+<p><strong>Protected Payload</strong></p>
+<blockquote>
+<p>Because strings are of variable length it's not
+possible to give absolute offsets here</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x0</td>
+<td align="right">0</td>
+<td>SGString</td>
+<td>Userhash</td>
+</tr>
+<tr>
+<td align="right">0x?</td>
+<td align="right">?</td>
+<td>SGString</td>
+<td>Auth Token</td>
+</tr>
+<tr>
+<td align="right">0x?</td>
+<td align="right">?</td>
+<td>uint32</td>
+<td>Request Number</td>
+</tr>
+<tr>
+<td align="right">0x?</td>
+<td align="right">?</td>
+<td>uint32</td>
+<td>Request Group Start</td>
+</tr>
+<tr>
+<td align="right">0x?</td>
+<td align="right">?</td>
+<td>uint32</td>
+<td>Request Group End</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Userhash</strong>: Xbox Live Userhash (<code>uhs</code>)</li>
+<li><strong>Auth Token</strong>: Xbox Live Auth token (<code>XSTS</code>)</li>
+<li><strong>Request Number</strong>: Current request number</li>
+<li><strong>Request Group Start</strong>: First request number of this group</li>
+<li><strong>Request Group End</strong>: Last request number of that group <strong>+ 1</strong></li>
+</ul>
+<h4 id="request-group-explaination">Request Group explaination</h4>
+<blockquote>
+<p><strong>Example</strong>: If you just have a single connect fragment, assume
+request number 0:</p>
+<p>Request Number: 0, Request Group Start: 0, Request Group End: 1</p>
+<p>Next connect attempt, if needed, would be:</p>
+<p>Request Number: 1, Request Group Start: 1, Request Group End: 2</p>
+<p><strong>Example 2</strong>: You have 3 connect fragments, starting again with request number 0:</p>
+<p>Fragment #1: Request Number: 0, Request Group Start: 0, Request Group End: 3</p>
+<p>Fragment #2: Request Number: 1, Request Group Start: 0, Request Group End: 3</p>
+<p>Fragment #3: Request Number: 2, Request Group Start: 0, Request Group End: 3</p>
+</blockquote>
+<h3 id="connect-response">Connect Response</h3>
+<p><strong>Packet Type</strong>: <code>0xCC01</code>
+<strong>Response</strong>: None</p>
+<p>If the request was formatted and encrypted properly, the console responds
+with the following packet:</p>
+<p><strong>Unprotected Payload</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x00</td>
+<td align="right">0</td>
+<td>byte[16]</td>
+<td>IV</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>IV</strong>: Initialization Vector of the encrypted
+  packet</li>
+</ul>
+<p><strong>Protected Payload</strong></p>
+<table>
+<thead>
+<tr>
+<th align="right">Offset (hex)</th>
+<th align="right">Offset (dec)</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0x0</td>
+<td align="right">0</td>
+<td>uint32</td>
+<td>Connect Result</td>
+</tr>
+<tr>
+<td align="right">0x4</td>
+<td align="right">4</td>
+<td>uint32</td>
+<td>Pairing State</td>
+</tr>
+<tr>
+<td align="right">0x8</td>
+<td align="right">8</td>
+<td>uint32</td>
+<td>Participant ID</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Connect Result</strong>: Indicates status of the connect
+  attempt, see <a href="#connect-result">Connect Result</a></li>
+<li><strong>Pairing State</strong>: Pairing state of the client</li>
+<li><strong>Participant Id</strong>: Auto-incremented index given to
+  the client by the console. Received <a href="../message/">Messages</a> in the
+  active session have to match that Id in their <code>Target Participant Id</code>
+  field.</li>
+</ul>
+<h4 id="connect-result">Connect Result</h4>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Success</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>Pending</td>
+<td>0x01</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unknown</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>Anonymous Connection Disabled</td>
+<td>0x03</td>
+</tr>
+<tr>
+<td>Device Limit Exceeded</td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>SmartGlass disabled</td>
+<td>0x05</td>
+</tr>
+<tr>
+<td>User Auth failed</td>
+<td>0x06</td>
+</tr>
+<tr>
+<td>User SignIn failed</td>
+<td>0x07</td>
+</tr>
+<tr>
+<td>User SignIn timeout</td>
+<td>0x08</td>
+</tr>
+<tr>
+<td>User SignIn required</td>
+<td>0x09</td>
+</tr>
+</tbody>
+</table></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
