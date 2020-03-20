@@ -261,23 +261,23 @@ via packets of type <code>0xD00D</code>. We refer to them as messages of type <c
 <tbody>
 <tr>
 <td>Version</td>
-<td><code>0000 0000 0000 0011</code></td>
-<td>0x03</td>
+<td><code>1100 0000 0000 0000</code></td>
+<td>0xC000</td>
 </tr>
 <tr>
 <td>Need Acknowledgement</td>
-<td><code>0000 0000 0000 0100</code></td>
-<td>0x04</td>
+<td><code>0010 0000 0000 0000</code></td>
+<td>0x2000</td>
 </tr>
 <tr>
 <td>Is Fragment</td>
-<td><code>0000 0000 0000 1000</code></td>
-<td>0x08</td>
+<td><code>0001 0000 0000 0000</code></td>
+<td>0x1000</td>
 </tr>
 <tr>
 <td>Message Type</td>
-<td><code>1111 1111 1111 0000</code></td>
-<td>0xFFF0</td>
+<td><code>0000 1111 1111 1111</code></td>
+<td>0x0FFF</td>
 </tr>
 </tbody>
 </table>
@@ -922,30 +922,30 @@ DisplayName = &quot;com.microsoft.xboxone.smartglass.beta&quot;
 <tr>
 <td align="right">0x00</td>
 <td align="right">0</td>
-<td>uint16</td>
+<td>uint32</td>
 <td>Title Id</td>
-</tr>
-<tr>
-<td align="right">0x02</td>
-<td align="right">2</td>
-<td>uint16</td>
-<td>Title Disposition</td>
 </tr>
 <tr>
 <td align="right">0x04</td>
 <td align="right">4</td>
+<td>uint16</td>
+<td>Title Disposition</td>
+</tr>
+<tr>
+<td align="right">0x06</td>
+<td align="right">6</td>
 <td>byte[16]</td>
 <td>Product Id</td>
 </tr>
 <tr>
-<td align="right">0x14</td>
-<td align="right">20</td>
+<td align="right">0x16</td>
+<td align="right">22</td>
 <td>byte[16]</td>
 <td>Sandbox Id</td>
 </tr>
 <tr>
-<td align="right">0x24</td>
-<td align="right">36</td>
+<td align="right">0x26</td>
+<td align="right">38</td>
 <td>SGString</td>
 <td>AUM Id</td>
 </tr>
